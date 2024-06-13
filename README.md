@@ -19,4 +19,4 @@ File Storage app is an application for saving your file like document, image, au
 
 ## Preview
 
-[preview]: https://github.com/darmawandoni6/file-storage/blob/master/public/preview.png 'preview 1'
+![](https://raw.githubusercontent.com/darmawandoni6/file-storage/master/public/preview.png)
