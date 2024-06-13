@@ -5,9 +5,9 @@ import moment from 'moment';
 import type { To } from 'react-router-dom';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 
-import { apiUpdateFile } from '../../Element/API/apiFile';
-import { apilist } from '../../Element/API/myFile';
 import { star } from '../../assets/svg';
+import { apiUpdateFile } from '../../element/API/apiFile';
+import { apilist } from '../../element/API/myFile';
 import { convertSize } from '../../helpers/convert';
 import useStateApi from '../../helpers/hooks/useStateApi';
 import CIcon from '../CIcon';

@@ -1,6 +1,6 @@
 import type { Dispatch, FC, SetStateAction } from 'react';
 
-import { apiRemoveFile } from '../../Element/API/apiFile';
+import { apiRemoveFile } from '../../element/API/apiFile';
 import useStateApi from '../../helpers/hooks/useStateApi';
 
 const RemoveFile: FC<{ item?: List; onClose: () => void; loading: [boolean, Dispatch<SetStateAction<boolean>>] }> = ({

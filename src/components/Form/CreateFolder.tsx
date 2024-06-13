@@ -3,8 +3,8 @@ import { useState } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
-import type { PCreateFolder } from '../../Element/API/createFolder';
-import { apicReateFolder } from '../../Element/API/createFolder';
+import type { PCreateFolder } from '../../element/API/createFolder';
+import { apicReateFolder } from '../../element/API/createFolder';
 import useStateApi from '../../helpers/hooks/useStateApi';
 
 const CreateFolder: FC<{ onClose: () => void }> = ({ onClose }) => {

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import cx from 'classnames';
 import { useParams, useSearchParams } from 'react-router-dom';
 
-import { apiUploadFile } from '../../Element/API/uploadFile';
+import { apiUploadFile } from '../../element/API/uploadFile';
 import useStateApi from '../../helpers/hooks/useStateApi';
 
 const UploadFile: FC<{ show: boolean; onClose: () => void }> = ({ show, onClose }) => {

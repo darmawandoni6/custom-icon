@@ -2,10 +2,10 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import App from './App.tsx';
-import List from './Element/List.tsx';
-import Login from './Element/Login.tsx';
-import MyFiles from './Element/MyFiles';
-import Register from './Element/Register.tsx';
+import List from './element/List.tsx';
+import Login from './element/Login.tsx';
+import MyFiles from './element/MyFiles.tsx';
+import Register from './element/Register.tsx';
 import ProviderReact from './helpers/ProviderReact.tsx';
 import './index.css';
 

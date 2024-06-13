@@ -1,7 +1,7 @@
 import type { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 
-import { apiUpdateFile } from '../../Element/API/apiFile';
+import { apiUpdateFile } from '../../element/API/apiFile';
 import useStateApi from '../../helpers/hooks/useStateApi';
 
 const RenameFile: FC<{ item?: List; onClose: () => void; loading: [boolean, Dispatch<SetStateAction<boolean>>] }> = ({
