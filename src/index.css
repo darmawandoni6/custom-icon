@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .popper-popup {
+    @apply hidden bg-white rounded min-w-40 py-2 text-base shadow border;
+  }
+
+  .popper-popup span {
+    @apply cursor-pointer;
+  }
+  .popper-popup a,
+  .popper-popup span {
+    @apply block w-full py-1 px-4 clear-both whitespace-nowrap
+    
+    /* font-size: 16px;
+    font-weight: 300;
+    display: block;
+    padding: 20px;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase; */;
+  }
+  .popper-popup a:hover,
+  .popper-popup span:hover {
+    @apply bg-[#f8f9fa];
+  }
+  .popper-popup[data-popper-reference-hidden] {
+    @apply invisible pointer-events-none;
+  }
+  .popper-popup[show-popper] {
+    @apply block z-10;
+  }
+
+  .popper-popup[data-popper-placement^='top'] .popper-arrow {
+    bottom: -4px;
+  }
+
+  .popper-popup[data-popper-placement^='bottom'] .popper-arrow {
+    top: -4px;
+  }
+
+  .popper-popup[data-popper-placement^='left'] .popper-arrow {
+    right: -4px;
+  }
+
+  .popper-popup[data-popper-placement^='right'] .popper-arrow {
+    left: -4px;
+  }
+
+  .popper-popup[data-popper-reference-hidden] .popper-arrow::before {
+    @apply visible;
+  }
+}
