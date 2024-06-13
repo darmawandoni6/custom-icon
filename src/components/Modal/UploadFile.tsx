@@ -7,8 +7,13 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { apiUploadFile } from '../../element/API/uploadFile';
 import useStateApi from '../../helpers/hooks/useStateApi';
 
-const UploadFile: FC<{ show: boolean; onClose: () => void }> = ({ show, onClose }) => {
+const UploadFile: FC<{ show: boolean; onClose: (sum?: boolean) => void; remaining: number }> = ({
+  show,
+  onClose,
+  remaining,
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
   const [form, setForm] = useState<{ text: string; file: File | null }>({
     text: '',
     file: null,
@@ -30,6 +35,7 @@ const UploadFile: FC<{ show: boolean; onClose: () => void }> = ({ show, onClose 
   const handlePreview = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
+    setError('');
     setForm({
       text: e.target.value,
       file: e.target.files[0],
@@ -37,8 +43,6 @@ const UploadFile: FC<{ show: boolean; onClose: () => void }> = ({ show, onClose 
   };
 
   const previewImg = () => {
-    console.log(form);
-
     if (form.file?.type.includes('application/'))
       return (
         <>
@@ -81,6 +85,12 @@ const UploadFile: FC<{ show: boolean; onClose: () => void }> = ({ show, onClose 
   const handleUpload = async () => {
     const { file } = form;
     if (!file) return;
+
+    if (file.size > remaining) {
+      setError('Ruang Penyimpanan tidak mencukupin');
+      return;
+    }
+
     const frm = new FormData();
     frm.append('file', file);
     if (searchParams.get('folder')) {
@@ -95,7 +105,7 @@ const UploadFile: FC<{ show: boolean; onClose: () => void }> = ({ show, onClose 
       }
       const list = await apiUploadFile(frm, param);
       setValue({ list });
-      onClose();
+      onClose(true);
     } finally {
       setLoading(false);
     }
@@ -119,6 +129,13 @@ const UploadFile: FC<{ show: boolean; onClose: () => void }> = ({ show, onClose 
           </div>
         </label>
         <input id="upload" type="file" className="hidden" onChange={handlePreview} value={form.text} />
+        <div
+          className={cx('text-sm mt-2 text-red-400 transition-all duration-200 ease-linear opacity-0', {
+            ['opacity-100']: !!error,
+          })}
+        >
+          <span className="font-bold">{error}</span>
+        </div>
 
         <button
           className="py-1 px-4 rounded bg-[#ff9f43] mt-3 text-yellow-50 select-none"

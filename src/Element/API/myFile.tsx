@@ -38,3 +38,13 @@ export const apilist = async (params?: Partial<ParamsList>): Promise<StorageData
     return Promise.reject(error);
   }
 };
+
+export const apiSumFile = async (): Promise<number> => {
+  try {
+    type Rest = ResAPI<number>;
+    const { data } = (await httpService.get<Rest>('/sum-file')).data;
+    return data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

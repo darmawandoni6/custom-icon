@@ -192,7 +192,6 @@ const TableWrapper: FC<{ type?: string }> = () => {
                     show={show === i}
                     idx={i}
                     setShow={() => {
-                      console.log({ show });
                       setShow((prev) => {
                         if (prev === i) return undefined;
                         return i;

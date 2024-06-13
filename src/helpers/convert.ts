@@ -27,3 +27,7 @@ export const convertSize = (size: SizeData, toUnit: typeData) => {
 
   return roundToTwoDecimals(convertedSize);
 };
+
+export const percent = (nilai1: number, nilai2: number) => {
+  return roundToTwoDecimals((nilai1 / nilai2) * 100);
+};

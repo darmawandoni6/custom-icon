@@ -10,53 +10,12 @@ import CreateFolder from '../components/Form/CreateFolder';
 import Modal from '../components/Modal/Modal';
 import SwiperComponent from '../components/SwiperComponent';
 import TableWrapper from '../components/TableWrapper';
+import { overview } from '../helpers/constants';
 import { convertSize } from '../helpers/convert';
 import useStateApi from '../helpers/hooks/useStateApi';
 import { apiCount, apiSlider, apilist } from './API/myFile';
 import List from './List';
 
-const overview = [
-  {
-    name: 'Folders',
-    icon: '/folder.svg',
-    key: 'folder',
-    sum: 300,
-    bg: 'bg-[#FFECD9]',
-    to: '/folder',
-  },
-  {
-    name: 'PDF',
-    icon: '/pdf-02.svg',
-    key: 'document',
-    sum: 50,
-    bg: 'bg-[#FFCCCC]',
-    to: '/document',
-  },
-  {
-    name: 'Images',
-    icon: '/image.svg',
-    key: 'image',
-    sum: 240,
-    bg: 'bg-[#BFEED4]',
-    to: '/image',
-  },
-  {
-    name: 'Videos',
-    icon: '/video.svg',
-    key: 'video',
-    sum: 30,
-    bg: 'bg-[#FFCCCC]',
-    to: '/video',
-  },
-  {
-    name: 'Audios',
-    icon: '/audio.svg',
-    key: 'audio',
-    sum: 100,
-    bg: 'bg-[#FFECD9]',
-    to: '/audio',
-  },
-];
 const MyFiles = () => {
   const [show, setShow] = useState<boolean>(false);
 
@@ -75,6 +34,8 @@ const MyFiles = () => {
   };
 
   useEffect(() => {
+    const params: Partial<ParamsList> = { open, filter: param.type };
+
     const fetch = async () => {
       const count = await apiCount();
       const slider = await apiSlider();
@@ -83,14 +44,11 @@ const MyFiles = () => {
         slider,
       });
     };
-
-    fetch();
-  }, []);
-
-  useEffect(() => {
-    const params: Partial<ParamsList> = { open, filter: param.type };
-
     fetchList(params);
+
+    if (location.pathname === '/') {
+      fetch();
+    }
   }, [location]);
 
   if (open || param.type) return <List title="Folder" />;
