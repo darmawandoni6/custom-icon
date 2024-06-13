@@ -15,7 +15,9 @@ const RemoveFile: FC<{ item?: List; onClose: () => void; loading: [boolean, Disp
     try {
       setLoading(true);
 
-      const list = await apiRemoveFile(item.id);
+      const params = value.list.params;
+
+      const list = await apiRemoveFile(item.id, params);
 
       if (item.size) {
         const iDocument = value.slider.document.findIndex((v) => v.id === item.id);

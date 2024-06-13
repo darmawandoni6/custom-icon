@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import moment from 'moment';
 import type { To } from 'react-router-dom';
@@ -29,6 +29,18 @@ const TableWrapper: FC<{ type?: string }> = () => {
   const { pathname } = useLocation();
 
   const { value, setValue } = useStateApi();
+
+  const { dsbPrev, dsbNext } = useMemo(() => {
+    const { params, meta } = value.list;
+    const dsb = { dsbPrev: true, dsbNext: false };
+
+    if (params?.page) {
+      dsb.dsbPrev = params.page === 1;
+      dsb.dsbNext = params.page === meta.lastPage;
+    }
+
+    return dsb;
+  }, [value.list.params]);
 
   const srcIcon = (type?: string) => {
     if (!type) return '/folder.svg';
@@ -74,10 +86,13 @@ const TableWrapper: FC<{ type?: string }> = () => {
 
       const open = searchParams.get('folder') as string;
 
-      const list = await apilist({ open, archived: pathname === '/archived' });
-      setValue({
-        list,
-      });
+      const params = value.list.params;
+      if (params) {
+        params.open = open;
+        params.archived = pathname === '/archived';
+      }
+      const list = await apilist(params);
+      setValue({ list });
     } finally {
       setShow(undefined);
     }
@@ -103,13 +118,29 @@ const TableWrapper: FC<{ type?: string }> = () => {
 
       const open = searchParams.get('folder') as string;
 
-      const list = await apilist({ open });
-      setValue({
-        list,
-      });
+      const params = value.list.params;
+      if (params) {
+        params.open = open;
+      }
+      const list = await apilist(params);
+      setValue({ list });
     } finally {
       setShow(undefined);
     }
+  };
+
+  const handlePage = async (isNext: boolean) => {
+    const params = value.list.params;
+    let vPage = 1;
+
+    if (params?.page) {
+      vPage = isNext ? params.page + 1 : params.page - 1;
+    } else {
+      vPage += 1;
+    }
+
+    const list = await apilist({ page: vPage });
+    setValue({ list });
   };
 
   return (
@@ -188,11 +219,13 @@ const TableWrapper: FC<{ type?: string }> = () => {
       <footer className="py-6 flex justify-between">
         <span className="text-xs font-semibold">{`${value.list.meta.page} - ${value.list.meta.perPage} of ${value.list.meta.count.toLocaleString('id')} items`}</span>
         <section className="flex gap-2 items-center">
-          <button className="w-8 h-8 opacity-[0.7]">
+          <button className="w-8 h-8 opacity-[0.7]" disabled={dsbPrev} onClick={() => handlePage(false)}>
             <i className="fa fa-angle-left"></i>
           </button>
-          <span className="w-8 h-8 text-center leading-8 rounded-full bg-[#ff9f43] text-white">1</span>
-          <button className="w-8 h-8 opacity-[0.7]">
+          <span className="w-8 h-8 text-center leading-8 rounded-full bg-[#ff9f43] text-white">
+            {value.list.meta.page}
+          </span>
+          <button className="w-8 h-8 opacity-[0.7]" disabled={dsbNext} onClick={() => handlePage(true)}>
             <i className="fa fa-angle-right"></i>
           </button>
         </section>

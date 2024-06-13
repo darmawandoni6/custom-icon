@@ -16,7 +16,7 @@ const UploadFile: FC<{ show: boolean; onClose: () => void }> = ({ show, onClose 
 
   const [searchParams] = useSearchParams();
   const param = useParams();
-  const { setValue } = useStateApi();
+  const { value, setValue } = useStateApi();
 
   useEffect(() => {
     if (show) {
@@ -88,10 +88,13 @@ const UploadFile: FC<{ show: boolean; onClose: () => void }> = ({ show, onClose 
     }
     try {
       setLoading(true);
-      const list = await apiUploadFile(frm, param.type, searchParams.get('folder') as string);
-      setValue({
-        list,
-      });
+      const params = value.list.params;
+      if (params) {
+        params.filter = param.type;
+        params.open = searchParams.get('folder') as string;
+      }
+      const list = await apiUploadFile(frm, param);
+      setValue({ list });
       onClose();
     } finally {
       setLoading(false);

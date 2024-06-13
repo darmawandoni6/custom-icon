@@ -42,6 +42,7 @@ declare type StorageData = {
   count: CountStorage;
   slider: ListSlider;
   list: {
+    params?: Partial<ParamsList>;
     data: List[];
     meta: Meta;
   };
@@ -54,6 +55,8 @@ declare type ParamsList = {
   archived: boolean;
   recent: boolean;
   star: boolean;
+  page: number;
+  perPage: number;
 };
 
 declare type List = {

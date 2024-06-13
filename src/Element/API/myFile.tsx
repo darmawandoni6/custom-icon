@@ -25,7 +25,7 @@ export const apiSlider = async () => {
   }
 };
 
-export const apilist = async (params?: Partial<ParamsList>) => {
+export const apilist = async (params?: Partial<ParamsList>): Promise<StorageData['list']> => {
   try {
     type Rest = ResAPI<List[]>;
     const { data, meta } = (
@@ -33,7 +33,7 @@ export const apilist = async (params?: Partial<ParamsList>) => {
         params,
       })
     ).data;
-    return { data, meta: meta as Meta };
+    return { data, meta: meta as Meta, params: params as Partial<ParamsList> };
   } catch (error) {
     return Promise.reject(error);
   }

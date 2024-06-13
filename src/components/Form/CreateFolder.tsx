@@ -12,7 +12,7 @@ const CreateFolder: FC<{ onClose: () => void }> = ({ onClose }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [searchParams] = useSearchParams();
-  const { setValue } = useStateApi();
+  const { value, setValue } = useStateApi();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -28,11 +28,11 @@ const CreateFolder: FC<{ onClose: () => void }> = ({ onClose }) => {
     }
     try {
       setLoading(true);
-      const list = await apicReateFolder(payload);
+      const params = value.list.params;
 
-      setValue({
-        list,
-      });
+      const list = await apicReateFolder(payload, params);
+
+      setValue({ list });
       onClose();
     } finally {
       setLoading(false);
