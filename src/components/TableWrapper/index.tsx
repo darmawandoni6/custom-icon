@@ -1,7 +1,9 @@
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 
 import moment from 'moment';
-import { Link, To, useLocation, useSearchParams } from 'react-router-dom';
+import type { To } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 
 import { apiUpdateFile } from '../../Element/API/apiFile';
 import { apilist } from '../../Element/API/myFile';

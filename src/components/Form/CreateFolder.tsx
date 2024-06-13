@@ -1,8 +1,10 @@
-import { ChangeEvent, FC, useState } from 'react';
+import type { ChangeEvent, FC } from 'react';
+import { useState } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
-import { PCreateFolder, apicReateFolder } from '../../Element/API/createFolder';
+import type { PCreateFolder } from '../../Element/API/createFolder';
+import { apicReateFolder } from '../../Element/API/createFolder';
 import useStateApi from '../../helpers/hooks/useStateApi';
 
 const CreateFolder: FC<{ onClose: () => void }> = ({ onClose }) => {

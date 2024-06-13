@@ -1,13 +1,14 @@
-import { type FC, ReactElement, type SVGAttributes, useMemo } from 'react';
+import type { ReactElement } from 'react';
+import { type FC, type SVGAttributes, useMemo } from 'react';
 
 import classNames from 'classnames';
 
 import styles from './style.module.css';
 
-export interface CIconProps extends SVGAttributes<unknown> {
+export type CIconProps = {
   icon: string[] | ReactElement;
   size?: 'custom' | 'custom-size' | 'sm' | 'lg' | 'xl' | 'xxl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl';
-}
+} & SVGAttributes<unknown>;
 const CIcon: FC<CIconProps> = ({ icon, className, height, size, width, ...props }) => {
   const { iconCode, viewBox } = useMemo(() => {
     if (Array.isArray(icon)) return { iconCode: icon[1], viewBox: `0 0 ${icon[0]}` };

@@ -1,7 +1,7 @@
 import httpService from '../../helpers/httpService';
 import { apilist } from './myFile';
 
-export const apiUpdateFile = async (id: string, payload: Partial<List>, params: Partial<ParamsList>) => {
+export const apiUpdateFile = async (id: string, payload: Partial<List>, params?: Partial<ParamsList>) => {
   try {
     await httpService.put(`/file/${id}`, payload, { params });
   } catch (error) {

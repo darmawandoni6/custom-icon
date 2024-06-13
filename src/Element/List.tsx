@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 
 import CreateFolder from '../components/Form/CreateFolder';
 import Modal from '../components/Modal/Modal';

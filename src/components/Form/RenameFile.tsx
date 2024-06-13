@@ -1,4 +1,5 @@
-import { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import type { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
+import { useEffect, useState } from 'react';
 
 import { apiUpdateFile } from '../../Element/API/apiFile';
 import useStateApi from '../../helpers/hooks/useStateApi';

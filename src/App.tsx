@@ -48,9 +48,7 @@ const App = () => {
     const { pathname } = location;
     const fetch = async (params?: Partial<ParamsList>) => {
       const list = await apilist(params);
-      setValue({
-        list,
-      });
+      setValue({ list });
     };
     if (pathname === '/document') {
       fetch({ filter: 'document' });
