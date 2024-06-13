@@ -37,6 +37,8 @@ const UploadFile: FC<{ show: boolean; onClose: () => void }> = ({ show, onClose 
   };
 
   const previewImg = () => {
+    console.log(form);
+
     if (form.file?.type.includes('application/'))
       return (
         <>
@@ -48,6 +50,20 @@ const UploadFile: FC<{ show: boolean; onClose: () => void }> = ({ show, onClose 
       return (
         <>
           <img className="h-[96px] m-auto" src={URL.createObjectURL(form.file)} alt="" />
+          <div className="text-center opacity-[.6] text-sm select-none">{form.file.name}</div>
+        </>
+      );
+    if (form.file?.type.includes('video/'))
+      return (
+        <>
+          <img className="h-[96px] m-auto" src="/video.svg" alt="" />
+          <div className="text-center opacity-[.6] text-sm select-none">{form.file.name}</div>
+        </>
+      );
+    if (form.file?.type.includes('audio/'))
+      return (
+        <>
+          <img className="h-[96px] m-auto" src="/audi.svg" alt="" />
           <div className="text-center opacity-[.6] text-sm select-none">{form.file.name}</div>
         </>
       );
