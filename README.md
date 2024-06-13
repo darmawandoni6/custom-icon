@@ -13,6 +13,8 @@ File Storage app is an application for saving your file like document, image, au
 - Install node v20
 - Install yarn
 - Clone this repo [link](https://github.com/darmawandoni6/file-storage)
+- Clone serve [link](https://github.com/darmawandoni6/file-storage-server)
+- runing server
 - yarn install
 - yarn dev
 - Open [http://localhost:5173/](http://localhost:5173/) in your browser
