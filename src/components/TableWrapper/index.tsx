@@ -156,6 +156,11 @@ const TableWrapper: FC<{ type?: string }> = () => {
           </tr>
         </thead>
         <tbody>
+          {!value.list.data[0] && (
+            <tr>
+              <td colSpan={5}>Empty Datañ</td>
+            </tr>
+          )}
           {value.list.data.map((item, i) => (
             <tr key={i}>
               <td className="p-3 align-middle text-sm border-b border-solid">

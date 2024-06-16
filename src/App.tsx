@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import cx from 'classnames';
 import { Link, Outlet, useLocation, useSearchParams } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { file, plussCircle } from './assets/svg';
 import CIcon from './components/CIcon';
