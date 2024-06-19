@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import App from './App.tsx';
 import List from './element/List.tsx';
@@ -53,5 +54,6 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ProviderReact>
     <RouterProvider router={router} />
+    <ToastContainer />
   </ProviderReact>,
 );

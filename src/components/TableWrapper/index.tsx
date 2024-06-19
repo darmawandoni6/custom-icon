@@ -177,7 +177,7 @@ const TableWrapper: FC<{ type?: string }> = () => {
               <td className="p-3 align-middle text-sm border-b border-solid">
                 {item.size ? `${convertSize({ value: item.size, unit: 'B' }, 'MB')} MB` : '_'}
               </td>
-              <td className="p-3 align-middle text-sm border-b border-solid">Nolan Christopher</td>
+              <td className="p-3 align-middle text-sm border-b border-solid">{item.user.name}</td>
               <td className="p-3 align-middle text-sm border-b border-solid">
                 <div className="flex gap-2 items-center">
                   <div role="button" onClick={() => handleStar(item)}>
@@ -194,6 +194,7 @@ const TableWrapper: FC<{ type?: string }> = () => {
                     />
                   </div>
                   <Dropdown
+                    text={<i className="fa fa-ellipsis-v"></i>}
                     show={show === i}
                     idx={i}
                     setShow={() => {

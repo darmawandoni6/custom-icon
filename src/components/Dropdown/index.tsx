@@ -3,7 +3,14 @@ import { useEffect, useRef } from 'react';
 
 import * as Popper from '@popperjs/core';
 
-const Dropdown: FC<{ idx: number; show: boolean; setShow: () => void; children: ReactNode }> = (props) => {
+const Dropdown: FC<{
+  idx?: number;
+  show: boolean;
+  setShow: () => void;
+  children: ReactNode;
+  text: ReactNode;
+  placement?: Popper.Placement;
+}> = (props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const popperPopup = useRef<HTMLDivElement | null>(null);
   const popperButton = useRef<HTMLButtonElement | null>(null);
@@ -32,7 +39,7 @@ const Dropdown: FC<{ idx: number; show: boolean; setShow: () => void; children: 
   const createInstance = () => {
     if (popperButton.current && popperPopup.current) {
       popperInstance = Popper.createPopper(popperButton.current, popperPopup.current, {
-        placement: 'bottom-start', //preferred placement of popper
+        placement: props.placement ? props.placement : 'bottom-start', //preferred placement of popper
         modifiers: [
           {
             name: 'offset', //offsets popper from the reference/button
@@ -80,10 +87,17 @@ const Dropdown: FC<{ idx: number; show: boolean; setShow: () => void; children: 
   return (
     <div ref={ref} className="relative w-fit">
       <button className="p-2" ref={popperButton} onClick={props.setShow}>
-        <i className="fa fa-ellipsis-v"></i>
+        {props.text}
       </button>
       <div ref={popperPopup} className="popper-popup">
-        <ol>{Array.isArray(props.children) && Array(props.children).map((item, i) => <li key={i}>{item}</li>)}</ol>
+        {!Array.isArray(props.children) && props.children}
+        {Array.isArray(props.children) && (
+          <ol>
+            {Array(props.children).map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
+          </ol>
+        )}
       </div>
     </div>
   );

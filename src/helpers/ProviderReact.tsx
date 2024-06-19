@@ -21,6 +21,7 @@ const initialState: StorageData = {
       count: 0,
     },
   },
+  user: {},
 };
 
 const context = {

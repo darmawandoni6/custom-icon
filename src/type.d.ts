@@ -39,6 +39,7 @@ declare type Folder = {
 };
 
 declare type StorageData = {
+  user: Partial<User>;
   count: CountStorage;
   slider: ListSlider;
   list: {
@@ -70,4 +71,13 @@ declare type List = {
   updatedAt: string;
   archived: boolean;
   star: boolean;
+  user: User;
+};
+
+declare type User = {
+  email: string;
+  name: string;
+  password: string;
+  createdAt: string;
+  updatedAt: string;
 };

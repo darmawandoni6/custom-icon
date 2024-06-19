@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import { apiLogin } from './API/apiAuth';
 
@@ -90,7 +90,6 @@ const Login = () => {
           </h4>
         </form>
       </div>
-      <ToastContainer />
     </div>
   );
 };
