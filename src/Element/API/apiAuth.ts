@@ -1,9 +1,18 @@
 import httpService from '../../helpers/httpService';
-import type { Form } from '../Login';
+import type { Form as FormLogin } from '../Login';
+import { Form as FormRegister } from '../Register';
 
-export const apiLogin = async (payload: Form) => {
+export const apiLogin = async (payload: FormLogin) => {
   try {
     await httpService.post('/login', payload);
+    window.location.href = '/';
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+export const apiregister = async (payload: FormRegister) => {
+  try {
+    await httpService.post('/register', payload);
     window.location.href = '/';
   } catch (error) {
     return Promise.reject(error);

@@ -51,6 +51,8 @@ declare type StorageData = {
 
 declare type ParamsList = {
   filter: string;
+  oldName: string;
+  search: string;
   folder: string;
   open: string;
   archived: boolean;

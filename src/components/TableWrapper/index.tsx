@@ -158,7 +158,9 @@ const TableWrapper: FC<{ type?: string }> = () => {
         <tbody>
           {!value.list.data[0] && (
             <tr>
-              <td colSpan={5}>Empty Datañ</td>
+              <td colSpan={5} className="text-center py-4">
+                Empty Data
+              </td>
             </tr>
           )}
           {value.list.data.map((item, i) => (

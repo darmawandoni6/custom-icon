@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 import cx from 'classnames';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { apiUploadFile } from '../../element/API/uploadFile';
 import useStateApi from '../../helpers/hooks/useStateApi';
@@ -93,19 +94,25 @@ const UploadFile: FC<{ show: boolean; onClose: (sum?: boolean) => void; remainin
 
     const frm = new FormData();
     frm.append('file', file);
-    if (searchParams.get('folder')) {
-      frm.append('folder', searchParams.get('folder') as string);
+    const open = searchParams.get('open') as string;
+
+    if (open) {
+      frm.append('folder', open);
     }
     try {
       setLoading(true);
       const params = value.list.params;
       if (params) {
-        params.filter = param.type;
-        params.open = searchParams.get('folder') as string;
+        params.open = open;
       }
-      const list = await apiUploadFile(frm, param);
+
+      const list = await apiUploadFile(frm, params);
       setValue({ list });
+      toast.success('Success upload file');
       onClose(true);
+    } catch (error) {
+      const err = error as ResAPI;
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }

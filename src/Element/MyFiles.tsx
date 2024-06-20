@@ -24,6 +24,7 @@ const MyFiles = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const open = searchParams.get('open') as string;
+  const search = searchParams.get('search') as string;
 
   const fetchList = async (params?: Partial<ParamsList>) => {
     window.scroll(0, 0);
@@ -34,7 +35,7 @@ const MyFiles = () => {
   };
 
   useEffect(() => {
-    const params: Partial<ParamsList> = { open, filter: param.type };
+    const params: Partial<ParamsList> = { open, filter: param.type, search };
 
     const fetch = async () => {
       const count = await apiCount();
@@ -51,7 +52,7 @@ const MyFiles = () => {
     }
   }, [location]);
 
-  if (open || param.type) return <List title="Folder" />;
+  if (open || param.type || search) return <List title="Folder" />;
 
   return (
     <div className="p-3 flex-1 overflow-hidden">

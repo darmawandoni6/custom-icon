@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 
 import cx from 'classnames';
-import { Link, Outlet, useLocation, useSearchParams } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -20,7 +20,9 @@ const App = () => {
   const location = useLocation();
   const { value, setValue } = useStateApi();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const open = searchParams.get('open') as string;
+  const search = searchParams.get('search') as string;
 
   const [show, setShow] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
@@ -29,11 +31,13 @@ const App = () => {
     value: 0,
     max: convertSize({ value: 5, unit: 'GB' }, 'B'),
   });
+  const [srcText, setSrcText] = useState<string>('');
 
   const sumFile = async () => {
     const value = await apiSumFile();
     setSize((prev) => ({ ...prev, value }));
   };
+
   useEffect(() => {
     sumFile();
     apiProfile().then((user) => {
@@ -42,23 +46,28 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    setSrcText(search ?? '');
+  }, [search]);
+
+  useEffect(() => {
     const { pathname } = location;
-    const fetch = async (params?: Partial<ParamsList>) => {
+    const fetch = async (params: Partial<ParamsList>) => {
       const list = await apilist(params);
+
       setValue({ list });
     };
     if (pathname === '/document') {
-      fetch({ filter: 'document' });
+      fetch({ filter: 'document', search });
     }
 
     if (pathname === '/archived') {
-      fetch({ archived: true, open });
+      fetch({ archived: true, open, search });
     }
     if (pathname === '/recent') {
-      fetch({ recent: true });
+      fetch({ recent: true, search });
     }
     if (pathname === '/favorite') {
-      fetch({ star: true, open });
+      fetch({ star: true, open, search });
     }
   }, [location]);
 
@@ -67,7 +76,7 @@ const App = () => {
       if (to === '/') {
         return location.pathname === '/' || location.pathname.includes('/my-files');
       }
-      return location.pathname.includes(to);
+      return to === location.pathname;
     },
     [location.pathname],
   );
@@ -76,6 +85,20 @@ const App = () => {
     await apiLogout();
     window.location.href = '/login';
     toast.success('success logout');
+  };
+
+  const handlechange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSrcText(e.target.value);
+  };
+  const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      navigate({
+        pathname: location.pathname,
+        search: new URLSearchParams({
+          search: e.currentTarget.value,
+        }).toString(),
+      });
+    }
   };
 
   return (
@@ -91,6 +114,9 @@ const App = () => {
               type="text"
               placeholder="Search ..."
               className="border rounded h-9 w-96 ps-9 outline-none text-gray-400"
+              onChange={handlechange}
+              onKeyUp={handleKeyUp}
+              value={srcText}
             />
             <div className="  absolute left-0 top-0 h-full aspect-square flex">
               <i className="fa-solid fa-magnifying-glass m-auto text-gray-400"></i>
@@ -114,7 +140,7 @@ const App = () => {
               <div className="text-lg mt-1 mb-3">{value.user.name}</div>
               <div className="bg-[#fafbfe] rounded-2xl py-3 px-4 text-sm w-full">
                 <div role="button" onClick={() => setModal(true)}>
-                  <i className="fad-solid fa-pen-to-square me-2"></i>Update Profile
+                  <i className="fa-solid fa-pen-to-square me-2"></i>Update Profile
                 </div>
                 <div className="border my-2 -mx-3" />
                 <div role="button" onClick={handleLogOut}>

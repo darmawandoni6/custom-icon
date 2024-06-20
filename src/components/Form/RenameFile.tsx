@@ -40,7 +40,12 @@ const RenameFile: FC<{ item?: List; onClose: () => void; loading: [boolean, Disp
     try {
       setLoading(true);
       const renameText = rename(text);
-      await apiUpdateFile(item.id, { name: renameText });
+      const params: Partial<ParamsList> = {};
+      if (!item.file) {
+        params.oldName = item.name;
+      }
+
+      await apiUpdateFile(item.id, { name: renameText }, params);
 
       const iList = value.list.data.findIndex((v) => v.id === item.id);
       value.list.data[iList].name = renameText;
