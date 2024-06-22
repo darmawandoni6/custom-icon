@@ -1,12 +1,15 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 
+import { useOutletContext } from 'react-router-dom';
+
 import CreateFolder from '../components/Form/CreateFolder';
 import Modal from '../components/Modal/Modal';
 import TableWrapper from '../components/TableWrapper';
 
 const List: FC<{ title: string; add?: boolean }> = (props) => {
   const add = props.add ?? false;
+  const { loading } = useOutletContext<{ loading: boolean }>();
 
   const [show, setShow] = useState<boolean>(false);
 
@@ -27,7 +30,7 @@ const List: FC<{ title: string; add?: boolean }> = (props) => {
             <CreateFolder onClose={() => setShow(false)} />
           </Modal>
         </div>
-        <TableWrapper />
+        <TableWrapper loading={loading} />
       </div>
     </div>
   );

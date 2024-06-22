@@ -1,10 +1,16 @@
+import { Cookies } from 'react-cookie';
+
 import httpService from '../../helpers/httpService';
 import type { Form as FormLogin } from '../Login';
 import { Form as FormRegister } from '../Register';
 
 export const apiLogin = async (payload: FormLogin) => {
   try {
-    await httpService.post('/login', payload);
+    const { data } = (await httpService.post<ResAPI<{ expired: string; token: string }>>('/login', payload)).data;
+
+    const cookie = new Cookies();
+    cookie.set('token', data.token, { expires: new Date(data.expired) });
+
     window.location.href = '/';
   } catch (error) {
     return Promise.reject(error);
@@ -12,7 +18,9 @@ export const apiLogin = async (payload: FormLogin) => {
 };
 export const apiregister = async (payload: FormRegister) => {
   try {
-    await httpService.post('/register', payload);
+    const { data } = (await httpService.post<ResAPI<{ expired: string; token: string }>>('/register', payload)).data;
+    const cookie = new Cookies();
+    cookie.set('token', data.token, { expires: new Date(data.expired) });
     window.location.href = '/';
   } catch (error) {
     return Promise.reject(error);

@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useMemo, useState } from 'react';
 
 import cx from 'classnames';
 import { Link, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
@@ -25,6 +25,7 @@ const App = () => {
   const search = searchParams.get('search') as string;
 
   const [show, setShow] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [size, setSize] = useState<{ value: number; max: number }>({
@@ -32,6 +33,17 @@ const App = () => {
     max: convertSize({ value: 5, unit: 'GB' }, 'B'),
   });
   const [srcText, setSrcText] = useState<string>('');
+
+  const totalProgress = useMemo(() => {
+    let now = convertSize({ value: size.value, unit: 'B' }, 'GB');
+    let type = 'GB';
+    if (now < 1) {
+      now = convertSize({ value: size.value, unit: 'B' }, 'MB');
+      type = 'MB';
+    }
+
+    return `${now}${type} / ${convertSize({ value: size.max, unit: 'B' }, 'GB')}GB`;
+  }, [size]);
 
   const sumFile = async () => {
     const value = await apiSumFile();
@@ -52,9 +64,14 @@ const App = () => {
   useEffect(() => {
     const { pathname } = location;
     const fetch = async (params: Partial<ParamsList>) => {
-      const list = await apilist(params);
+      try {
+        setLoading(true);
+        const list = await apilist(params);
 
-      setValue({ list });
+        setValue({ list });
+      } finally {
+        setLoading(false);
+      }
     };
     if (pathname === '/document') {
       fetch({ filter: 'document', search });
@@ -222,10 +239,10 @@ const App = () => {
                 }}
               />
             </div>
-            <span className="text-[12px]">{`${convertSize({ value: size.value, unit: 'B' }, 'GB')}GB / ${convertSize({ value: size.max, unit: 'B' }, 'GB')}GB`}</span>
+            <span className="text-[12px]">{totalProgress}</span>
           </div>
         </aside>
-        <Outlet />
+        <Outlet context={{ loading }} />
       </div>
       <UploadFile
         show={show}

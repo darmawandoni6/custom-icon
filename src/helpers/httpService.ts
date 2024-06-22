@@ -1,12 +1,23 @@
 import axios, { type AxiosError } from 'axios';
+import { Cookies } from 'react-cookie';
 
 const httpService = axios.create({
-  baseURL: 'http://localhost:4000/api-v1',
-  withCredentials: true,
+  baseURL: 'https://file-storage-server-theta.vercel.app/api-v1',
 });
 
 httpService.interceptors.request.use(
-  (config) => config,
+  (config) => {
+    const exclude = ['/login', '/register'];
+    if (config.url && !exclude.includes(config.url)) {
+      const cookie = new Cookies();
+      const token = cookie.get('token');
+      if (token) {
+        config.headers.Authorization = token;
+      }
+      config.withCredentials = true;
+    }
+    return config;
+  },
   (error) => Promise.reject(error),
 );
 httpService.interceptors.response.use(

@@ -2,7 +2,7 @@ import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
 
 import cx from 'classnames';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { apiUploadFile } from '../../element/API/uploadFile';
@@ -21,7 +21,6 @@ const UploadFile: FC<{ show: boolean; onClose: (sum?: boolean) => void; remainin
   });
 
   const [searchParams] = useSearchParams();
-  const param = useParams();
   const { value, setValue } = useStateApi();
 
   useEffect(() => {

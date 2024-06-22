@@ -18,6 +18,7 @@ import List from './List';
 
 const MyFiles = () => {
   const [show, setShow] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const { value, setValue } = useStateApi();
   const param = useParams();
@@ -28,10 +29,15 @@ const MyFiles = () => {
 
   const fetchList = async (params?: Partial<ParamsList>) => {
     window.scroll(0, 0);
-    const list = await apilist(params);
-    setValue({
-      list,
-    });
+    try {
+      setLoading(true);
+      const list = await apilist(params);
+      setValue({
+        list,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -183,7 +189,7 @@ const MyFiles = () => {
             <CreateFolder onClose={() => setShow(false)} />
           </Modal>
         </div>
-        <TableWrapper />
+        <TableWrapper loading={loading} />
       </div>
     </div>
   );
