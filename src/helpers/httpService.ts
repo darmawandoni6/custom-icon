@@ -1,4 +1,5 @@
-import axios, { type AxiosError } from 'axios';
+import type { AxiosError } from 'axios';
+import axios from 'axios';
 import { Cookies } from 'react-cookie';
 
 const httpService = axios.create({

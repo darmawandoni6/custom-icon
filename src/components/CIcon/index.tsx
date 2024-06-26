@@ -1,5 +1,5 @@
-import type { ReactElement } from 'react';
-import { type FC, type SVGAttributes, useMemo } from 'react';
+import type { FC, ReactElement, SVGAttributes } from 'react';
+import { useMemo } from 'react';
 
 import classNames from 'classnames';
 

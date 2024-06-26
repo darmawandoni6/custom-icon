@@ -2,7 +2,7 @@ import { Cookies } from 'react-cookie';
 
 import httpService from '../../helpers/httpService';
 import type { Form as FormLogin } from '../Login';
-import { Form as FormRegister } from '../Register';
+import type { Form as FormRegister } from '../Register';
 
 export const apiLogin = async (payload: FormLogin) => {
   try {

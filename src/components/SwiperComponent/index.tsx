@@ -11,11 +11,16 @@ const SwiperComponent: FC<{ children: ReactNode; type: string }> = (props) => {
       const nextEl = `.swiper-button-next-${props.type}`;
       const prevEl = `.swiper-button-prev-${props.type}`;
       const swiper = new Swiper(ref.current, {
-        slidesPerView: 3,
+        slidesPerView: 1,
         spaceBetween: 15,
         navigation: {
           nextEl,
           prevEl,
+        },
+        breakpoints: {
+          640: {
+            slidesPerView: 3,
+          },
         },
         on: {
           slideChange: (val: Swiper) => {

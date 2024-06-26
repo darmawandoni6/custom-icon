@@ -44,7 +44,7 @@ const CreateFolder: FC<{ onClose: () => void }> = ({ onClose }) => {
       <h1 className="font-bold mb-3">New Folder</h1>
       <input
         className="block mb-4 appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
-          w-[400px]"
+          w-full"
         type="text"
         placeholder="Untitled folder"
         value={text}

@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { useMemo, useState } from 'react';
 
+import cx from 'classnames';
 import moment from 'moment';
 import type { To } from 'react-router-dom';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
@@ -145,92 +146,101 @@ const TableWrapper: FC<{ loading: boolean }> = ({ loading: loadingTable }) => {
 
   return (
     <>
-      <table className="w-full my-2 border-[#dbe0e6] align-top border-collapse">
-        <thead className="border-inherit border-solid border-0">
-          <tr className="border-inherit border-solid border-0">
-            {['Name', 'Last Modified', 'Size', 'Owner', 'Action'].map((item, i) => (
-              <th className="border-b border-solid text-left p-3 text-base font-medium" key={i}>
-                {item}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {loadingTable && (
-            <tr>
-              <td colSpan={5} className="text-center py-4">
-                Loading ...
-              </td>
+      <div className="w-full overflow-auto">
+        <table className="w-full my-2 border-[#dbe0e6] align-top border-collapse">
+          <thead className="border-inherit border-solid border-0">
+            <tr className="border-inherit border-solid border-0">
+              {['Name', 'Last Modified', 'Size', 'Owner', 'Action'].map((item, i) => (
+                <th
+                  className={cx('border-b border-solid text-left p-3 text-base font-medium', {
+                    'min-w-[100px]': item === 'Size',
+                    'min-w-[200px]': item === 'Owner',
+                  })}
+                  key={i}
+                >
+                  {item}
+                </th>
+              ))}
             </tr>
-          )}
-          {!loadingTable && !value.list.data[0] && (
-            <tr>
-              <td colSpan={5} className="text-center py-4">
-                Empty Data
-              </td>
-            </tr>
-          )}
-          {!loadingTable &&
-            value.list.data.map((item, i) => (
-              <tr key={i}>
-                <td className="p-3 align-middle text-sm border-b border-solid">
-                  <div className="flex gap-2 items-center">
-                    <img width={32} height={32} className="me-2" src={srcIcon(item.type)} alt="Folder" />
-                    <Link to={linkUrl(item)} target={item.file && '_blank'}>
-                      <span className="hover:underline">{item.name}</span>
-                    </Link>
-                  </div>
-                </td>
-                <td className="p-3 align-middle text-sm border-b border-solid">
-                  {moment(item.createdAt).format('MMM yyyy')}
-                </td>
-                <td className="p-3 align-middle text-sm border-b border-solid">
-                  {item.size ? `${convertSize({ value: item.size, unit: 'B' }, 'MB')} MB` : '_'}
-                </td>
-                <td className="p-3 align-middle text-sm border-b border-solid">{item.user.name}</td>
-                <td className="p-3 align-middle text-sm border-b border-solid">
-                  <div className="flex gap-2 items-center">
-                    <div role="button" onClick={() => handleStar(item)}>
-                      <CIcon
-                        icon={star}
-                        height={16}
-                        width={16}
-                        fill={item.star ? '#FF9F43' : 'none'}
-                        stroke={item.star ? '#FF9F43' : 'currentColor'}
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="cursor-pointer"
-                      />
-                    </div>
-                    <Dropdown
-                      text={<i className="fa fa-ellipsis-v"></i>}
-                      show={show === i}
-                      idx={i}
-                      setShow={() => {
-                        setShow((prev) => {
-                          if (prev === i) return undefined;
-                          return i;
-                        });
-                      }}
-                    >
-                      <span role="button" onClick={() => handleModal(item, 'rename')}>
-                        <i className="fa-solid fa-pen-to-square me-2"></i>Rename
-                      </span>
-                      <span role="button" onClick={() => handleArchive(item)}>
-                        <i className="fa-solid fa-box-archive me-2"></i>
-                        {item.archived ? 'Un-Archive' : 'Archive'}
-                      </span>
-                      <span role="button" onClick={() => handleModal(item, 'remove')}>
-                        <i className="fa-solid fa-trash-can me-2"></i>Remove
-                      </span>
-                    </Dropdown>
-                  </div>
+          </thead>
+          <tbody>
+            {loadingTable && (
+              <tr>
+                <td colSpan={5} className="text-center py-4">
+                  Loading ...
                 </td>
               </tr>
-            ))}
-        </tbody>
-      </table>
+            )}
+            {!loadingTable && !value.list.data[0] && (
+              <tr>
+                <td colSpan={5} className="text-center py-4">
+                  Empty Data
+                </td>
+              </tr>
+            )}
+            {!loadingTable &&
+              value.list.data.map((item, i) => (
+                <tr key={i}>
+                  <td className="p-3 align-middle text-sm border-b border-solid">
+                    <div className="flex gap-2 items-center max-w-[250px]">
+                      <img width={32} height={32} className="me-2" src={srcIcon(item.type)} alt="Folder" />
+                      <Link to={linkUrl(item)} target={item.file && '_blank'} className="w-full truncate">
+                        <span className="hover:underline">{item.name}</span>
+                      </Link>
+                    </div>
+                  </td>
+                  <td className="p-3 align-middle text-sm border-b border-solid">
+                    {moment(item.createdAt).format('MMM yyyy')}
+                  </td>
+                  <td className="p-3 align-middle text-sm border-b border-solid w-[100px]">
+                    {item.size ? `${convertSize({ value: item.size, unit: 'B' }, 'MB')} MB` : '_'}
+                  </td>
+                  <td className="p-3 align-middle text-sm border-b border-solid">{item.user.name}</td>
+                  <td className="p-3 align-middle text-sm border-b border-solid">
+                    <div className="flex gap-2 items-center">
+                      <div role="button" onClick={() => handleStar(item)}>
+                        <CIcon
+                          icon={star}
+                          height={16}
+                          width={16}
+                          fill={item.star ? '#FF9F43' : 'none'}
+                          stroke={item.star ? '#FF9F43' : 'currentColor'}
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="cursor-pointer"
+                        />
+                      </div>
+                      <Dropdown
+                        text={<i className="fa fa-ellipsis-v"></i>}
+                        show={show === i}
+                        idx={i}
+                        setShow={() => {
+                          setShow((prev) => {
+                            if (prev === i) return undefined;
+                            return i;
+                          });
+                        }}
+                      >
+                        <span role="button" onClick={() => handleModal(item, 'rename')}>
+                          <i className="fa-solid fa-pen-to-square me-2"></i>Rename
+                        </span>
+                        <span role="button" onClick={() => handleArchive(item)}>
+                          <i className="fa-solid fa-box-archive me-2"></i>
+                          {item.archived ? 'Un-Archive' : 'Archive'}
+                        </span>
+                        <span role="button" onClick={() => handleModal(item, 'remove')}>
+                          <i className="fa-solid fa-trash-can me-2"></i>Remove
+                        </span>
+                      </Dropdown>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+
       <footer className="py-6 flex justify-between">
         <span className="text-xs font-semibold">{`${value.list.meta.page} - ${value.list.meta.perPage} of ${value.list.meta.count.toLocaleString('id')} items`}</span>
         <section className="flex gap-2 items-center">

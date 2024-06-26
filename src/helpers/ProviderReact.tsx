@@ -1,4 +1,5 @@
-import { type FC, type ReactNode, createContext, useState } from 'react';
+import type { FC, ReactNode } from 'react';
+import { createContext, useState } from 'react';
 
 const initialState: StorageData = {
   count: {

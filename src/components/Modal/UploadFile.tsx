@@ -129,7 +129,7 @@ const UploadFile: FC<{ show: boolean; onClose: (sum?: boolean) => void; remainin
         onClick={(e) => e.stopPropagation()}
         className="bg-white rounded-lg shadow-md w-fit  m-auto max-w-full p-5 text-center"
       >
-        <label htmlFor="upload" className="block w-[400px]">
+        <label htmlFor="upload" className="block w-[400px] max-w-full">
           <div className="p-3 border border-dashed rounded cursor-pointer">
             <div className="mb-2">{previewImg()}</div>
           </div>

@@ -15,7 +15,7 @@ const Modal: FC<{ show: boolean; onClose: () => void; children: ReactNode }> = (
         onClick={(e) => e.stopPropagation()}
         className={cx(
           { 'bg-white shadow-md': show },
-          'min-w-[400px] rounded-lg w-fit  m-auto max-w-full p-5 transition-all duration-200 ease-linear',
+          'w-full max-w-[400px] rounded-lg  m-auto  p-5 transition-all duration-200 ease-linear',
         )}
       >
         {children}

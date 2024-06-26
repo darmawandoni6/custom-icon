@@ -63,7 +63,7 @@ const MyFiles = () => {
   return (
     <div className="p-3 flex-1 overflow-hidden">
       <h4 className="mb-2">Overview</h4>
-      <div className="grid grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-4 gap-3 mb-6 max-sm:grid-cols-2">
         {overview.map((item, i) => (
           <Link to={`/my-files${item.to}`} key={i}>
             <div className={cx('rounded-t-lg p-6 flex justify-center', item.bg)}>

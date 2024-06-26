@@ -70,7 +70,7 @@ const RenameFile: FC<{ item?: List; onClose: () => void; loading: [boolean, Disp
       <h1 className="font-bold mb-3">Rename File</h1>
       <input
         className="block mb-4 appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
-          w-[400px]"
+          w-full"
         type="text"
         placeholder="Untitled folder"
         value={text}

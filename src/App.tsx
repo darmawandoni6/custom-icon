@@ -1,4 +1,5 @@
-import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import type { ChangeEvent, KeyboardEvent } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import cx from 'classnames';
 import { Link, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
@@ -33,6 +34,7 @@ const App = () => {
     max: convertSize({ value: 5, unit: 'GB' }, 'B'),
   });
   const [srcText, setSrcText] = useState<string>('');
+  const [drawer, setDrawer] = useState<boolean>(false);
 
   const totalProgress = useMemo(() => {
     let now = convertSize({ value: size.value, unit: 'B' }, 'GB');
@@ -120,12 +122,17 @@ const App = () => {
 
   return (
     <div className="min-h-screen max-w-[1440px] flex flex-col  m-auto">
-      <div className="p-3 my-2 border-b-2 flex gap-2">
-        <div className="min-w-[250px] ">
-          <h4 className="text-2xl font-bold">File Manager</h4>
-          <p className="text-[#5B6670]">Manage your files</p>
+      <div className="lg:px-3 py-3 my-2 border-b-2 flex gap-2 ">
+        <div className="min-w-[250px] flex gap-2">
+          <button className="lg:hidden text-[#FF9F43] aspect-square h-full text-2xl" onClick={() => setDrawer(true)}>
+            <i className="fa-solid fa-bars"></i>
+          </button>
+          <section>
+            <h4 className="text-2xl font-bold">File Manager</h4>
+            <p className="text-[#5B6670]">Manage your files</p>
+          </section>
         </div>
-        <div className="w-full flex items-center justify-between">
+        <div className="w-full flex items-center justify-between max-sm:hidden">
           <div className="relative">
             <input
               type="text"
@@ -168,78 +175,95 @@ const App = () => {
           </Dropdown>
         </div>
       </div>
-      <div className="flex h-full w-full p-3">
-        <aside className="flex-none w-[250px] h-fit bg-white p-6  border border-[#dbe0e6] rounded-lg shadow-card sticky top-3">
-          <h5 className="flex al font-bold border-b border-gray-300 mb-4 pb-4">
-            <CIcon
-              icon={file}
-              height={24}
-              width={24}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="me-2"
-            />
-            Files
-          </h5>
-          <button
-            className="bg-[#FF9F43] border border-[#FF9F43] rounded-lg p-2 w-full text-white cursor-pointer mb-4"
-            onClick={() => setShow(true)}
-          >
-            <CIcon
-              icon={plussCircle}
-              height={24}
-              width={24}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="me-2"
-            />
-            New
-          </button>
-          <ul className="mb-5">
-            {listMenu.map((item, i) => (
-              <Link to={item.to} key={i}>
-                <li
-                  className={cx(
-                    'flex items-center font-semibold text-[#5B6670] mb-[5px] py-2 px-3 rounded-md cursor-pointer hover:bg-[#092C4C] hover:text-[#fff] text-sm',
-                    {
-                      ['bg-[#092C4C]']: active(item.to),
-                      'text-white': active(item.to),
-                    },
-                  )}
-                >
-                  <CIcon
-                    icon={item.icon}
-                    height={24}
-                    width={24}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="me-2"
-                  />
-
-                  {item.name}
-                </li>
-              </Link>
-            ))}
-          </ul>
-          <div className="flex flex-col items-center gap-2">
-            <div className="h-2 w-full rounded bg-slate-400 overflow-hidden">
-              <div
-                className="bg-[#FF9F43] h-full"
-                style={{
-                  width: `${percent(size.value, size.max)}%`,
-                }}
+      <div className="flex h-full w-full lg:p-3">
+        <aside
+          className={cx(
+            'flex-none lg:max-w-[250px] lg:w-full lg:h-fit lg:sticky lg:top-3 lg:visible',
+            'fixed inset-0 top-0 z-10 transition-all md:duration-200 ease-linear',
+            drawer ? 'bg-gray-900 bg-opacity-50 visible h-full' : 'invisible',
+          )}
+        >
+          <div className="relative p-6 bg-white border border-[#dbe0e6] lg:rounded-lg shadow-card -- w-[250px] h-full">
+            <button
+              className={cx(
+                'bg-white rounded-full h-10 w-10 absolute -right-12 top-2 font-bold shadow',
+                drawer ? 'block' : 'hidden',
+              )}
+              onClick={() => setDrawer(false)}
+            >
+              X
+            </button>
+            <h5 className="flex al font-bold border-b border-gray-300 mb-4 pb-4">
+              <CIcon
+                icon={file}
+                height={24}
+                width={24}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="me-2"
               />
+              Files
+            </h5>
+            <button
+              className="bg-[#FF9F43] border border-[#FF9F43] rounded-lg p-2 w-full text-white cursor-pointer mb-4"
+              onClick={() => setShow(true)}
+            >
+              <CIcon
+                icon={plussCircle}
+                height={24}
+                width={24}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="me-2"
+              />
+              New
+            </button>
+            <ul className="mb-5">
+              {listMenu.map((item, i) => (
+                <Link to={item.to} key={i}>
+                  <li
+                    className={cx(
+                      'flex items-center font-semibold text-[#5B6670] mb-[5px] py-2 px-3 rounded-md cursor-pointer hover:bg-[#092C4C] hover:text-[#fff] text-sm',
+                      {
+                        ['bg-[#092C4C]']: active(item.to),
+                        'text-white': active(item.to),
+                      },
+                    )}
+                  >
+                    <CIcon
+                      icon={item.icon}
+                      height={24}
+                      width={24}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="me-2"
+                    />
+
+                    {item.name}
+                  </li>
+                </Link>
+              ))}
+            </ul>
+            <div className="flex flex-col items-center gap-2">
+              <div className="h-2 w-full rounded bg-slate-400 overflow-hidden">
+                <div
+                  className="bg-[#FF9F43] h-full"
+                  style={{
+                    width: `${percent(size.value, size.max)}%`,
+                  }}
+                />
+              </div>
+              <span className="text-[12px]">{totalProgress}</span>
             </div>
-            <span className="text-[12px]">{totalProgress}</span>
           </div>
         </aside>
         <Outlet context={{ loading }} />
